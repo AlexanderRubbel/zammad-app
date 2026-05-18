@@ -8,7 +8,7 @@
   "scripts": {
     "icons": "node make-icon.js",
     "start": "npm run icons && electron .",
-    "dist": "npm run icons && electron-builder --win"
+    "dist": "node build.js"
   },
   "devDependencies": {
     "electron": "^33.0.0",
