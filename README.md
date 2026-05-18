@@ -36,7 +36,18 @@ Zammad bietet selbst keine native Windows-App – diese App schließt diese Lüc
 - **Selbst-gehostet** – optionales Ignorieren selbst-signierter
   SSL-Zertifikate
 
-## Installation
+## Downloads
+
+Fertige Builds gibt es unter **[Releases](../../releases)** (aktuell `v0.2`):
+
+- `Zammad Desktop Setup 0.2.0.exe` – Windows-Installer
+- `Zammad-Android-0.2.0.apk` – Android-App (Sideload)
+
+Beide Apps fragen beim **ersten Start nach deiner Zammad-Adresse** – es ist
+keine bestimmte Instanz fest eingebaut, die Apps können gefahrlos
+weitergegeben werden. Änderungen siehe [CHANGELOG](CHANGELOG.md).
+
+## Installation (Windows)
 
 1. `Zammad Desktop Setup <version>.exe` ausführen (aus den
    [Releases](../../releases) bzw. dem `dist/`-Ordner nach einem Build).
@@ -111,9 +122,11 @@ die mobile Zammad-Oberfläche in einem eigenen Fenster lädt und über einen
 1. `Zammad-Android-<version>.apk` aufs Android-Gerät kopieren.
 2. Datei öffnen → bei Nachfrage „Installation aus unbekannten Quellen"
    für die jeweilige App (z. B. Dateimanager) erlauben.
-3. Beim ersten Start die Benachrichtigungs-Berechtigung **zulassen** und die
-   Akku-Optimierung für „Zammad" möglichst deaktivieren (sonst pausiert
-   Android den Hintergrunddienst).
+3. Beim **ersten Start** die Zammad-Adresse eintragen (z. B.
+   `https://deinefirma.zammad.com`) – es ist keine Instanz fest eingebaut.
+4. Die Benachrichtigungs-Berechtigung **zulassen** und die Akku-Optimierung
+   für „Zammad" möglichst deaktivieren (sonst pausiert Android den
+   Hintergrunddienst). URL/Intervall/Ton später über das ⋮-Menü.
 
 ### Android aus dem Quellcode bauen
 

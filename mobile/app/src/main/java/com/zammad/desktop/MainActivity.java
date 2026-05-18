@@ -32,7 +32,8 @@ public class MainActivity extends Activity {
     public static final String KEY_URL = "url";
     public static final String KEY_INTERVAL = "interval";
     public static final String KEY_SOUND = "sound";
-    public static final String DEFAULT_URL = "https://cure-mannheim.zammad.com";
+    // No instance hardcoded: the user enters their Zammad URL on first start.
+    public static final String DEFAULT_URL = "";
 
     private WebView web;
     private ValueCallback<Uri[]> fileCallback;
@@ -46,7 +47,7 @@ public class MainActivity extends Activity {
         SharedPreferences sp = getSharedPreferences(PREFS, MODE_PRIVATE);
         if (!sp.contains(KEY_URL)) {
             sp.edit()
-                .putString(KEY_URL, DEFAULT_URL)
+                .putString(KEY_URL, "")
                 .putInt(KEY_INTERVAL, 30)
                 .putBoolean(KEY_SOUND, true)
                 .apply();
@@ -125,10 +126,15 @@ public class MainActivity extends Activity {
             }
         });
 
-        if (savedInstanceState == null) {
-            web.loadUrl(sp.getString(KEY_URL, DEFAULT_URL));
-        } else {
+        if (savedInstanceState != null) {
             web.restoreState(savedInstanceState);
+        } else {
+            String u = sp.getString(KEY_URL, "");
+            if (u == null || u.trim().isEmpty()) {
+                showSettings(); // first run: ask for the Zammad URL
+            } else {
+                web.loadUrl(u);
+            }
         }
 
         requestNotificationPermission();
@@ -199,15 +205,23 @@ public class MainActivity extends Activity {
             .setTitle("Einstellungen")
             .setView(box)
             .setPositiveButton("Speichern", (d, w) -> {
-                String url = urlIn.getText().toString().trim();
-                if (!url.startsWith("http://") && !url.startsWith("https://")) {
-                    url = "https://" + url;
-                }
+                String raw = urlIn.getText().toString().trim();
                 int iv;
                 try {
                     iv = Math.max(10, Integer.parseInt(intIn.getText().toString().trim()));
                 } catch (Exception e) {
                     iv = 30;
+                }
+                if (raw.isEmpty()) {
+                    sp.edit().putString(KEY_URL, "").putInt(KEY_INTERVAL, iv).apply();
+                    android.widget.Toast.makeText(this,
+                        "Bitte deine Zammad-Adresse eingeben.",
+                        android.widget.Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String url = raw;
+                if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                    url = "https://" + url;
                 }
                 sp.edit().putString(KEY_URL, url).putInt(KEY_INTERVAL, iv).apply();
                 web.loadUrl(url);

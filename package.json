@@ -1,6 +1,6 @@
 {
   "name": "zammad-app",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Zammad Desktop - eigenes Fenster mit Windows-Benachrichtigungen",
   "main": "main.js",
   "author": "Zammad Desktop",

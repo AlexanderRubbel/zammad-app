@@ -58,6 +58,12 @@ public class NotificationService extends Service {
         int last = sp.getInt("lastCount", 0);
 
         while (running && !Thread.currentThread().isInterrupted()) {
+            base = sp.getString(MainActivity.KEY_URL, "");
+            if (base == null || base.trim().isEmpty()) {
+                updateServiceNotification("Keine Zammad-Adresse konfiguriert");
+                try { Thread.sleep(interval * 1000L); } catch (InterruptedException e) { break; }
+                continue;
+            }
             int count = fetchUnread(base);
             if (count >= 0) {
                 if (count > last) {
