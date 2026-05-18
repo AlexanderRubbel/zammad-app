@@ -1,0 +1,48 @@
+{
+  "name": "zammad-app",
+  "version": "1.0.0",
+  "description": "Zammad Desktop - eigenes Fenster mit Windows-Benachrichtigungen",
+  "main": "main.js",
+  "author": "Zammad Desktop",
+  "license": "MIT",
+  "scripts": {
+    "icons": "node make-icon.js",
+    "start": "npm run icons && electron .",
+    "dist": "npm run icons && electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.zammad.desktop",
+    "productName": "Zammad Desktop",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "settings.html",
+      "build/icon.png",
+      "build/tray.png",
+      "build/badge.png"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

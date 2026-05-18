@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Zammad Desktop — Einstellungen</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", system-ui, sans-serif;
+    margin: 0; padding: 24px;
+    background: #f4f6f7; color: #1c2b30;
+  }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  p.sub { margin: 0 0 20px; color: #5a6b70; font-size: 13px; }
+  label.field { display: block; font-weight: 600; font-size: 13px; margin: 16px 0 6px; }
+  input[type=text], input[type=number] {
+    width: 100%; padding: 9px 11px; font-size: 14px;
+    border: 1px solid #c6d0d3; border-radius: 6px; background: #fff;
+  }
+  input[type=text]:focus, input[type=number]:focus {
+    outline: none; border-color: #1f7a8c; box-shadow: 0 0 0 3px rgba(31,122,140,.15);
+  }
+  .hint { font-size: 12px; color: #7a888c; margin-top: 4px; }
+  .toggle {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0; border-top: 1px solid #e3e9ea;
+  }
+  .toggle:first-of-type { border-top: none; }
+  .toggle input { margin-top: 2px; width: 16px; height: 16px; accent-color: #1f7a8c; }
+  .toggle .tlabel { font-size: 13.5px; font-weight: 600; }
+  .toggle .tdesc { font-size: 12px; color: #7a888c; }
+  .row { display: flex; gap: 14px; align-items: center; }
+  .row input[type=number] { width: 90px; }
+  .actions { margin-top: 24px; display: flex; gap: 10px; align-items: center; }
+  button {
+    background: #1f7a8c; color: #fff; border: none; border-radius: 6px;
+    padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  button:hover { background: #1a6675; }
+  #status { font-size: 13px; }
+  #status.err { color: #c0392b; }
+  #status.ok { color: #1e8449; }
+  .group { background:#fff; border:1px solid #e3e9ea; border-radius:8px; padding:6px 14px; }
+</style>
+</head>
+<body>
+  <h1>Zammad Desktop</h1>
+  <p class="sub">Verbindung &amp; Benachrichtigungen einrichten.</p>
+
+  <label class="field" for="url">Zammad-Adresse (URL)</label>
+  <input type="text" id="url" placeholder="https://deinefirma.zammad.com" />
+  <div class="hint">Komplette Adresse inkl. <code>https://</code>. Beispiel: https://support.meinefirma.de</div>
+
+  <label class="field">Optionen</label>
+  <div class="group">
+    <div class="toggle">
+      <input type="checkbox" id="runInTray" />
+      <div><div class="tlabel">Im Hintergrund weiterlaufen (Tray)</div>
+      <div class="tdesc">Fenster schließen minimiert ins Tray-Symbol — Benachrichtigungen laufen weiter.</div></div>
+    </div>
+    <div class="toggle">
+      <input type="checkbox" id="autostart" />
+      <div><div class="tlabel">Mit Windows starten</div>
+      <div class="tdesc">App startet automatisch beim Hochfahren (im Hintergrund).</div></div>
+    </div>
+    <div class="toggle">
+      <input type="checkbox" id="unreadBadge" />
+      <div><div class="tlabel">Ungelesen-Zähler anzeigen</div>
+      <div class="tdesc">Roter Marker auf dem Taskleisten-Symbol bei neuen Benachrichtigungen.</div></div>
+    </div>
+    <div class="toggle">
+      <input type="checkbox" id="sound" />
+      <div><div class="tlabel">Ton bei Benachrichtigung</div>
+      <div class="tdesc">Windows-Benachrichtigungston abspielen.</div></div>
+    </div>
+    <div class="toggle">
+      <input type="checkbox" id="ignoreCertErrors" />
+      <div><div class="tlabel">Zertifikatfehler ignorieren</div>
+      <div class="tdesc">Nur für selbst-gehostete Server mit selbst-signiertem SSL-Zertifikat aktivieren.</div></div>
+    </div>
+  </div>
+
+  <label class="field" for="pollInterval">Prüf-Intervall für Benachrichtigungen</label>
+  <div class="row">
+    <input type="number" id="pollInterval" min="5" max="600" />
+    <span class="hint" style="margin:0">Sekunden (Standard: 15)</span>
+  </div>
+
+  <div class="actions">
+    <button id="save">Speichern</button>
+    <span id="status"></span>
+  </div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const fields = ['runInTray', 'autostart', 'unreadBadge', 'sound', 'ignoreCertErrors'];
+
+  (async () => {
+    const c = await window.zammadSettings.get();
+    $('url').value = c.url || '';
+    fields.forEach((f) => ($(f).checked = !!c[f]));
+    $('pollInterval').value = c.pollInterval || 15;
+  })();
+
+  $('save').addEventListener('click', async () => {
+    const status = $('status');
+    let url = $('url').value.trim();
+    if (url && !/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+    try {
+      new URL(url);
+    } catch {
+      status.textContent = 'Bitte eine gültige URL eingeben.';
+      status.className = 'err';
+      return;
+    }
+
+    const cfg = { url, pollInterval: Math.max(5, parseInt($('pollInterval').value, 10) || 15) };
+    fields.forEach((f) => (cfg[f] = $(f).checked));
+
+    status.textContent = 'Speichere…';
+    status.className = '';
+    const r = await window.zammadSettings.save(cfg);
+    if (r && r.ok) {
+      status.textContent = 'Gespeichert.';
+      status.className = 'ok';
+    } else {
+      status.textContent = (r && r.error) || 'Fehler beim Speichern.';
+      status.className = 'err';
+    }
+  });
+</script>
+</body>
+</html>
