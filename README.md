@@ -6,6 +6,22 @@ Zammad-Weboberfläche in einem eigenen Fenster, mit echten
 
 Zammad bietet selbst keine native Windows-App – diese App schließt diese Lücke.
 
+## Hinweis (Disclaimer)
+
+> **Dieses Projekt ist nicht offiziell und steht in keiner Verbindung zur
+> Zammad GmbH oder zum Zammad-Projekt.** Es handelt sich um ein
+> unabhängiges, community-betriebenes Open-Source-Projekt eines
+> inoffiziellen Drittanbieter-Clients.
+>
+> „Zammad" ist eine Marke der jeweiligen Rechteinhaber; die Verwendung des
+> Namens dient ausschließlich der Beschreibung der Kompatibilität. Diese App
+> wird von Zammad weder herausgegeben, geprüft, unterstützt noch
+> gesponsert.
+>
+> Die Nutzung erfolgt auf eigene Verantwortung – ohne jegliche Gewährleistung
+> (siehe Lizenz). Bug-Reports, Pull Requests und Verbesserungen aus der
+> Community sind willkommen; ein offizieller Support besteht nicht.
+
 ## Funktionen
 
 - **Eigenes Fenster** – Zammad als eigenständiges Programm statt im Browser-Tab
