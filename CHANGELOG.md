@@ -19,6 +19,8 @@ Erste veröffentlichte Version. Enthält Desktop- **und** Android-App.
   electron-builder/winCodeSign-Symlink-Problems.
 - README mit Anleitung sowie Disclaimer (inoffiziell, community-betrieben,
   nicht mit Zammad affiliiert).
+- Signiertes Release-**AAB** für die Google Play Console (`gradle
+  bundleRelease`); Signierung über nicht eingecheckte `keystore.properties`.
 
 ### Geändert
 - **Keine fest verdrahtete Zammad-Instanz mehr.** Beide Apps fragen die

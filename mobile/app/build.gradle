@@ -2,6 +2,16 @@ plugins {
     id 'com.android.application'
 }
 
+// Release signing is read from mobile/keystore.properties (NOT committed).
+// Without it (e.g. fresh checkout), builds fall back to debug signing so
+// `assembleDebug` still works; only the release AAB/APK needs the keystore.
+def keystorePropsFile = rootProject.file("keystore.properties")
+def hasKeystore = keystorePropsFile.exists()
+def keystoreProps = new Properties()
+if (hasKeystore) {
+    keystoreProps.load(new FileInputStream(keystorePropsFile))
+}
+
 android {
     namespace 'com.zammad.app'
     compileSdk 34
@@ -14,10 +24,21 @@ android {
         versionName "0.2.0"
     }
 
+    signingConfigs {
+        release {
+            if (hasKeystore) {
+                storeFile rootProject.file(keystoreProps['storeFile'])
+                storePassword keystoreProps['storePassword']
+                keyAlias keystoreProps['keyAlias']
+                keyPassword keystoreProps['keyPassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            signingConfig hasKeystore ? signingConfigs.release : signingConfigs.debug
         }
     }
 

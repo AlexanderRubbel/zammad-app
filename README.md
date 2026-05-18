@@ -143,6 +143,35 @@ gradle assembleDebug                 # APK bauen
 `local.properties` mit `sdk.dir=<Pfad zum Android-SDK>` ist erforderlich
 (maschinenspezifisch, nicht eingecheckt).
 
+### Google Play (AAB)
+
+Für den Upload in die Play Console wird ein **signiertes Release-AAB**
+benötigt (debug-signiert lehnt Google ab). Die Signierung wird aus
+`mobile/keystore.properties` gelesen (zusammen mit dem Keystore **nicht**
+eingecheckt):
+
+```
+storeFile=release.keystore
+storePassword=<…>
+keyAlias=<…>
+keyPassword=<…>
+```
+
+Keystore einmalig erzeugen und dann bauen:
+
+```bash
+cd mobile
+keytool -genkeypair -v -keystore release.keystore -alias zammad \
+  -keyalg RSA -keysize 2048 -validity 10000
+gradle bundleRelease
+# Ergebnis: mobile/app/build/outputs/bundle/release/app-release.aab
+```
+
+> **Wichtig:** `release.keystore` und das Passwort sicher aufbewahren und
+> sichern. Ohne sie sind keine App-Updates in der Play Console mehr möglich
+> (außer über Play App Signing mit Upload-Key-Reset). Beide Dateien sind
+> bewusst von Git ausgeschlossen.
+
 ## Projektstruktur
 
 | Datei / Ordner   | Zweck                                                       |

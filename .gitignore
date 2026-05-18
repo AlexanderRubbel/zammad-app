@@ -16,6 +16,13 @@ mobile/app/build/
 mobile/build/
 mobile/local.properties
 *.apk
+*.aab
+
+# Signing secrets — NEVER commit
+mobile/keystore.properties
+mobile/release.keystore
+*.keystore
+*.jks
 
 # Runtime / logs
 *.log
