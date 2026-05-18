@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.zammad.desktop'
+    namespace 'com.zammad.app'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.zammad.desktop"
+        applicationId "com.zammad.app"
         minSdk 24
         targetSdk 34
         versionCode 2

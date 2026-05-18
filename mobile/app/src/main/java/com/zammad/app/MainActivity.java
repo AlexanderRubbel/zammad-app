@@ -1,4 +1,4 @@
-package com.zammad.desktop;
+package com.zammad.app;
 
 import android.app.Activity;
 import android.content.Context;
