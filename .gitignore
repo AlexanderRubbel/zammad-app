@@ -10,6 +10,13 @@ dist/
 # Generated icons (recreated by `npm run icons`)
 build/
 
+# Android (mobile/) build artifacts
+mobile/.gradle/
+mobile/app/build/
+mobile/build/
+mobile/local.properties
+*.apk
+
 # Runtime / logs
 *.log
 el.log

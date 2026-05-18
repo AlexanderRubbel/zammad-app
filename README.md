@@ -89,15 +89,57 @@ npm run dist     # Windows-Installer nach dist/ bauen
 > Bei ganz leerem Cache kann der erste `npm run dist`-Lauf mit einem
 > Symlink-Fehler abbrechen – dann einfach ein zweites Mal ausführen.
 
+## Android-App (`mobile/`)
+
+Im Ordner `mobile/` liegt das Gegenstück für Android: eine native App, die
+die mobile Zammad-Oberfläche in einem eigenen Fenster lädt und über einen
+**Hintergrunddienst** regelmäßig nach neuen Benachrichtigungen fragt
+(lokale Benachrichtigungen, kein Firebase/Server nötig).
+
+- Eigene App mit Icon und Autostart (auch nach Geräteneustart)
+- Hintergrunddienst mit dauerhafter Mini-Notiz (von Android vorgeschrieben);
+  Latenz = Abfrageintervall (Standard 30 Sek., einstellbar)
+- Google-SSO funktioniert (WebView meldet sich als echter Chrome)
+- URL/Intervall/Ton über das ⋮-Menü oben rechts einstellbar
+
+> Hinweis: Mangels Firebase/Server ist dies **kein** echtes Push wie bei
+> WhatsApp, sondern Polling im Hintergrund – „quasi sofort", abhängig vom
+> Intervall, mit etwas mehr Akkuverbrauch.
+
+### Installation (Sideload)
+
+1. `Zammad-Android-<version>.apk` aufs Android-Gerät kopieren.
+2. Datei öffnen → bei Nachfrage „Installation aus unbekannten Quellen"
+   für die jeweilige App (z. B. Dateimanager) erlauben.
+3. Beim ersten Start die Benachrichtigungs-Berechtigung **zulassen** und die
+   Akku-Optimierung für „Zammad" möglichst deaktivieren (sonst pausiert
+   Android den Hintergrunddienst).
+
+### Android aus dem Quellcode bauen
+
+Voraussetzung: JDK 17, Android SDK (Plattform 34, Build-Tools 34) und
+Gradle 8.7.
+
+```bash
+cd mobile
+node make-android-icons.js          # Launcher-Icons erzeugen
+gradle assembleDebug                 # APK bauen
+# Ergebnis: mobile/app/build/outputs/apk/debug/app-debug.apk
+```
+
+`local.properties` mit `sdk.dir=<Pfad zum Android-SDK>` ist erforderlich
+(maschinenspezifisch, nicht eingecheckt).
+
 ## Projektstruktur
 
-| Datei           | Zweck                                                        |
-|-----------------|--------------------------------------------------------------|
-| `main.js`       | Electron-Hauptprozess: Fenster, Tray, Autostart, Benachrichtigungen, SSO |
-| `preload.js`    | Liest ungelesene Benachrichtigungen über Zammads API         |
-| `settings.html` | Einstellungsfenster (URL + Optionen)                         |
-| `make-icon.js`  | Generiert die App-/Tray-Icons (ohne externe Abhängigkeiten)  |
-| `build.js`      | Zuverlässiger Windows-Build (electron-builder-Workaround)    |
+| Datei / Ordner   | Zweck                                                       |
+|------------------|-------------------------------------------------------------|
+| `main.js`        | Electron-Hauptprozess: Fenster, Tray, Autostart, Benachrichtigungen, SSO |
+| `preload.js`     | Liest ungelesene Benachrichtigungen über Zammads API        |
+| `settings.html`  | Einstellungsfenster (URL + Optionen)                        |
+| `make-icon.js`   | Generiert die App-/Tray-Icons (ohne externe Abhängigkeiten) |
+| `build.js`       | Zuverlässiger Windows-Build (electron-builder-Workaround)   |
+| `mobile/`        | Native Android-App (WebView + Hintergrund-Benachrichtigungsdienst) |
 
 ## Lizenz
 
