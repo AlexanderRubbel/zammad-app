@@ -2,6 +2,17 @@
 
 Alle nennenswerten Änderungen an diesem Projekt.
 
+## v0.2.1 — 2026-05-18 (Android)
+
+### Geändert
+- Android: **Ziel-/Compile-API auf 35 (Android 15)** angehoben — Google Play
+  verlangt für Uploads mindestens API-Level 35. Android Gradle Plugin auf
+  8.6.0 aktualisiert.
+- `versionCode` 3, `versionName` 0.2.1.
+
+> Die Windows-Desktop-App ist unverändert (weiterhin v0.2.0, siehe Release
+> `v0.2`).
+
 ## v0.2.0 — 2026-05-18
 
 Erste veröffentlichte Version. Enthält Desktop- **und** Android-App.

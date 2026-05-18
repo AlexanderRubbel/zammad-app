@@ -38,10 +38,11 @@ Zammad bietet selbst keine native Windows-App – diese App schließt diese Lüc
 
 ## Downloads
 
-Fertige Builds gibt es unter **[Releases](../../releases)** (aktuell `v0.2`):
+Fertige Builds gibt es unter **[Releases](../../releases)**:
 
-- `Zammad Desktop Setup 0.2.0.exe` – Windows-Installer
-- `Zammad-Android-0.2.0.apk` – Android-App (Sideload)
+- `Zammad Desktop Setup 0.2.0.exe` – Windows-Installer (Release `v0.2`)
+- `Zammad-Android-0.2.1.apk` – Android-App, Sideload (Release `v0.2.1`)
+- `Zammad-0.2.1.aab` – Android App Bundle für Google Play (Ziel-API 35)
 
 Beide Apps fragen beim **ersten Start nach deiner Zammad-Adresse** – es ist
 keine bestimmte Instanz fest eingebaut, die Apps können gefahrlos
