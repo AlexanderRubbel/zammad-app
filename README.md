@@ -1,10 +1,17 @@
-# Zammad Desktop
+# Zammad App
 
-Eine schlanke Desktop-App für [Zammad](https://github.com/zammad/zammad): die
-Zammad-Weboberfläche in einem eigenen Fenster, mit echten
-**Windows-Benachrichtigungen**. Gebaut mit Electron.
+Schlanke, eigenständige Clients für [Zammad](https://github.com/zammad/zammad)
+– die Zammad-Weboberfläche in einem eigenen Fenster, mit echten
+Benachrichtigungen:
 
-Zammad bietet selbst keine native Windows-App – diese App schließt diese Lücke.
+- **Windows-Desktop-App** (Electron) – eigenes Fenster, native
+  Windows-Benachrichtigungen, Tray/Autostart
+- **Android-App** – native WebView-App mit Hintergrunddienst für
+  Benachrichtigungen (auch als Play-AAB)
+
+Zammad bietet selbst keine native Desktop- oder Store-App – dieses Projekt
+schließt diese Lücke. Beide Apps fragen die Zammad-Adresse beim ersten Start
+ab; es ist keine Instanz fest eingebaut.
 
 ## Hinweis (Disclaimer)
 
@@ -22,7 +29,9 @@ Zammad bietet selbst keine native Windows-App – diese App schließt diese Lüc
 > (siehe Lizenz). Bug-Reports, Pull Requests und Verbesserungen aus der
 > Community sind willkommen; ein offizieller Support besteht nicht.
 
-## Funktionen
+## Funktionen (Windows-Desktop)
+
+> Funktionen der Android-App siehe Abschnitt [Android-App](#android-app-mobile).
 
 - **Eigenes Fenster** – Zammad als eigenständiges Programm statt im Browser-Tab
 - **Windows-Benachrichtigungen** – neue Tickets/Updates erscheinen als native
