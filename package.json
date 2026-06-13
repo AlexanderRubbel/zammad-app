@@ -1,14 +1,15 @@
 {
   "name": "zammad-app",
-  "version": "0.2.0",
-  "description": "Zammad Desktop - eigenes Fenster mit Windows-Benachrichtigungen",
+  "version": "0.3.0",
+  "description": "Zammad Desktop - eigenes Fenster mit nativen Benachrichtigungen (Windows & Linux)",
   "main": "main.js",
   "author": "Zammad Desktop",
   "license": "MIT",
   "scripts": {
     "icons": "node make-icon.js",
     "start": "npm run icons && electron .",
-    "dist": "node build.js"
+    "dist": "node build.js",
+    "dist:linux": "node build-linux.js"
   },
   "devDependencies": {
     "electron": "^33.0.0",
@@ -36,6 +37,15 @@
         }
       ],
       "icon": "build/icon.png"
+    },
+    "linux": {
+      "target": ["pacman", "AppImage"],
+      "icon": "build/icon.png",
+      "executableName": "zammad-desktop",
+      "category": "Office",
+      "maintainer": "AlexanderRubbel <128258510+AlexanderRubbel@users.noreply.github.com>",
+      "synopsis": "Zammad im eigenen Fenster mit nativen Benachrichtigungen",
+      "description": "Eigenständiger Client für die Zammad-Weboberfläche mit nativen Desktop-Benachrichtigungen, Tray und Autostart."
     },
     "nsis": {
       "oneClick": false,
