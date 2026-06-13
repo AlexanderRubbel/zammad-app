@@ -55,6 +55,19 @@ Fertige Builds gibt es unter **[Releases](../../releases)**:
 - `Zammad-Android-0.2.1.apk` – Android-App, Sideload (Release `v0.2.1`)
 - `Zammad-0.2.1.aab` – Android App Bundle für Google Play (Ziel-API 35)
 
+Für **Linux** gibt es zwei dauerhafte Links, die immer das neueste Release
+liefern:
+
+- Arch-Paket: <https://github.com/AlexanderRubbel/zammad-app/releases/latest/download/zammad-app.pacman>
+- AppImage: <https://github.com/AlexanderRubbel/zammad-app/releases/latest/download/zammad-app.AppImage>
+
+```bash
+# Arch / Manjaro / CachyOS – neueste Version laden und installieren
+curl -L -o zammad-app.pacman \
+  https://github.com/AlexanderRubbel/zammad-app/releases/latest/download/zammad-app.pacman
+sudo pacman -U zammad-app.pacman
+```
+
 Beide Apps fragen beim **ersten Start nach deiner Zammad-Adresse** – es ist
 keine bestimmte Instanz fest eingebaut, die Apps können gefahrlos
 weitergegeben werden. Änderungen siehe [CHANGELOG](CHANGELOG.md).
@@ -117,9 +130,9 @@ npm run dist:linux # Linux-Pakete (pacman + AppImage) nach dist/ bauen
 
 `npm run dist:linux` baut auf einem Linux-Rechner zwei Artefakte nach `dist/`:
 
-- **`zammad-app-<version>.pacman`** – natives Arch-Paket, installierbar mit
-  `sudo pacman -U dist/zammad-app-<version>.pacman`
-- **`zammad-app-<version>.AppImage`** – distributionsunabhängig, einfach
+- **`zammad-app.pacman`** – natives Arch-Paket, installierbar mit
+  `sudo pacman -U dist/zammad-app.pacman`
+- **`zammad-app.AppImage`** – distributionsunabhängig, einfach
   ausführbar machen (`chmod +x`) und starten
 
 Nach der pacman-Installation liegt die App als „Zammad Desktop" im

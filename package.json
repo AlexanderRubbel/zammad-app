@@ -40,7 +40,7 @@
     },
     "linux": {
       "target": ["pacman", "AppImage"],
-      "artifactName": "${name}-${version}.${ext}",
+      "artifactName": "${name}.${ext}",
       "icon": "build/icon.png",
       "executableName": "zammad-desktop",
       "category": "Office",
