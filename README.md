@@ -4,8 +4,9 @@ Schlanke, eigenständige Clients für [Zammad](https://github.com/zammad/zammad)
 – die Zammad-Weboberfläche in einem eigenen Fenster, mit echten
 Benachrichtigungen:
 
-- **Windows-Desktop-App** (Electron) – eigenes Fenster, native
-  Windows-Benachrichtigungen, Tray/Autostart
+- **Desktop-App** (Electron) – eigenes Fenster, native Benachrichtigungen,
+  Tray/Autostart; Builds für **Windows** und **Linux** (Arch: pacman-Paket
+  + AppImage)
 - **Android-App** – native WebView-App mit Hintergrunddienst für
   Benachrichtigungen (auch als Play-AAB)
 
@@ -39,7 +40,8 @@ ab; es ist keine Instanz fest eingebaut.
 - **Im Hintergrund (Tray)** – Fenster schließen beendet nicht, sondern
   minimiert ins Tray; Benachrichtigungen laufen weiter
 - **Autostart mit Windows** – startet unsichtbar mit und benachrichtigt sofort
-- **Ungelesen-Zähler** – roter Marker auf dem Taskleisten-Symbol
+- **Ungelesen-Zähler** – roter Marker auf dem Taskleisten-Symbol (Windows)
+  bzw. Zahl-Badge auf dem Launcher-Icon (Linux)
 - **Ton** – optionaler Benachrichtigungston
 - **Google SSO** – funktioniert (eingebetteter Login wird unterstützt)
 - **Selbst-gehostet** – optionales Ignorieren selbst-signierter
@@ -97,18 +99,38 @@ nur den Windows-Teil zu prüfen.
 Voraussetzung: [Node.js](https://nodejs.org/) (Version 18+).
 
 ```bash
-npm install      # Abhängigkeiten installieren
-npm start        # App im Entwicklungsmodus starten
-npm run dist     # Windows-Installer nach dist/ bauen
+npm install        # Abhängigkeiten installieren
+npm start          # App im Entwicklungsmodus starten
+npm run dist       # Windows-Installer nach dist/ bauen
+npm run dist:linux # Linux-Pakete (pacman + AppImage) nach dist/ bauen
 ```
 
 `npm run dist` erzeugt `dist/Zammad Desktop Setup <version>.exe`.
 
-> Das Build-Skript (`build.js`) umgeht automatisch ein bekanntes
+> Das Windows-Build-Skript (`build.js`) umgeht automatisch ein bekanntes
 > electron-builder-Problem unter Windows (macOS-Symlinks im
 > winCodeSign-Paket, die ohne Admin-Rechte nicht entpackt werden können).
 > Bei ganz leerem Cache kann der erste `npm run dist`-Lauf mit einem
 > Symlink-Fehler abbrechen – dann einfach ein zweites Mal ausführen.
+
+### Linux / Arch
+
+`npm run dist:linux` baut auf einem Linux-Rechner zwei Artefakte nach `dist/`:
+
+- **`zammad-app-<version>.pacman`** – natives Arch-Paket, installierbar mit
+  `sudo pacman -U dist/zammad-app-<version>.pacman`
+- **`Zammad Desktop-<version>.AppImage`** – distributionsunabhängig, einfach
+  ausführbar machen (`chmod +x`) und starten
+
+Nach der pacman-Installation liegt die App als „Zammad Desktop" im
+Anwendungsmenü und als Befehl `zammad-desktop` vor. Plattformunterschiede zur
+Windows-Version: Der Ungelesen-Zähler erscheint als Zahl-Badge auf dem
+Launcher-Icon (statt als Taskleisten-Overlay) und der Autostart wird über
+`~/.config/autostart/zammad-desktop.desktop` eingerichtet.
+
+> Beim ersten Linux-Build lädt electron-builder einmalig seine eigene
+> fpm-/AppImage-Toolchain nach (Internetzugang nötig). Für das pacman-Ziel ist
+> kein systemweites `fpm` erforderlich.
 
 ## Android-App (`mobile/`)
 
@@ -191,6 +213,7 @@ gradle bundleRelease
 | `settings.html`  | Einstellungsfenster (URL + Optionen)                        |
 | `make-icon.js`   | Generiert die App-/Tray-Icons (ohne externe Abhängigkeiten) |
 | `build.js`       | Zuverlässiger Windows-Build (electron-builder-Workaround)   |
+| `build-linux.js` | Linux-Build (pacman-Paket + AppImage über electron-builder) |
 | `mobile/`        | Native Android-App (WebView + Hintergrund-Benachrichtigungsdienst) |
 
 ## Lizenz

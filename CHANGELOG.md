@@ -2,6 +2,22 @@
 
 Alle nennenswerten Änderungen an diesem Projekt.
 
+## v0.3.0 — 2026-06-13 (Desktop)
+
+### Hinzugefügt
+- **Linux-Unterstützung der Desktop-App.** `npm run dist:linux` baut ein
+  natives Arch-Paket (`pacman`, installierbar mit `pacman -U`) sowie ein
+  AppImage (`build-linux.js` + electron-builder `linux`-Target).
+- Autostart unter Linux über `~/.config/autostart/zammad-desktop.desktop`.
+- Ungelesen-Zähler unter Linux als Launcher-Badge (`app.setBadgeCount`),
+  da das Windows-Taskleisten-Overlay dort nicht existiert.
+
+### Geändert
+- `versionName`/`version` der Desktop-App auf 0.3.0; `applyAutostart` und die
+  Badge-Anzeige verzweigen jetzt nach Plattform (Windows/Linux).
+
+> Die Android-App ist unverändert (weiterhin v0.2.1).
+
 ## v0.2.1 — 2026-05-18 (Android)
 
 ### Geändert
