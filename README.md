@@ -119,7 +119,7 @@ npm run dist:linux # Linux-Pakete (pacman + AppImage) nach dist/ bauen
 
 - **`zammad-app-<version>.pacman`** – natives Arch-Paket, installierbar mit
   `sudo pacman -U dist/zammad-app-<version>.pacman`
-- **`Zammad Desktop-<version>.AppImage`** – distributionsunabhängig, einfach
+- **`zammad-app-<version>.AppImage`** – distributionsunabhängig, einfach
   ausführbar machen (`chmod +x`) und starten
 
 Nach der pacman-Installation liegt die App als „Zammad Desktop" im
