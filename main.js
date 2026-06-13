@@ -64,12 +64,46 @@ if (!gotLock) {
   });
 }
 
+const LINUX_AUTOSTART = path.join(
+  app.getPath('home'),
+  '.config',
+  'autostart',
+  'zammad-desktop.desktop'
+);
+
 function applyAutostart() {
-  if (process.platform !== 'win32') return;
-  app.setLoginItemSettings({
-    openAtLogin: !!config.autostart,
-    args: ['--hidden'],
-  });
+  if (process.platform === 'win32') {
+    app.setLoginItemSettings({
+      openAtLogin: !!config.autostart,
+      args: ['--hidden'],
+    });
+  } else if (process.platform === 'linux') {
+    applyAutostartLinux();
+  }
+}
+
+function applyAutostartLinux() {
+  try {
+    if (config.autostart) {
+      const exec = app.isPackaged
+        ? `"${process.execPath}" --hidden`
+        : `"${process.execPath}" "${app.getAppPath()}" --hidden`;
+      const entry =
+        '[Desktop Entry]\n' +
+        'Type=Application\n' +
+        'Name=Zammad Desktop\n' +
+        `Exec=${exec}\n` +
+        'Icon=zammad-desktop\n' +
+        'Terminal=false\n' +
+        'X-GNOME-Autostart-enabled=true\n';
+      fs.mkdirSync(path.dirname(LINUX_AUTOSTART), { recursive: true });
+      fs.writeFileSync(LINUX_AUTOSTART, entry);
+    } else if (fs.existsSync(LINUX_AUTOSTART)) {
+      fs.unlinkSync(LINUX_AUTOSTART);
+    }
+  } catch {
+    /* ignore */
+  }
 }
 
 function createMainWindow() {
@@ -244,8 +278,9 @@ function updateUnread(count) {
   const previous = lastUnread;
   lastUnread = count;
 
-  // Taskbar overlay + tray tooltip.
-  if (mainWindow && !mainWindow.isDestroyed()) {
+  if (process.platform === 'linux') {
+    app.setBadgeCount(config.unreadBadge && count > 0 ? count : 0);
+  } else if (mainWindow && !mainWindow.isDestroyed()) {
     if (config.unreadBadge && count > 0) {
       mainWindow.setOverlayIcon(
         nativeImage.createFromPath(ICON_BADGE),
